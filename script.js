@@ -14,6 +14,9 @@ function getPlayerChoice()
     return userchoice;
 }
 
+
+let userpoint = 0;
+let comppoint = 0;
 // plays one round of game
 function oneRound(userSelection, computerSelection)
 {
@@ -23,74 +26,93 @@ function oneRound(userSelection, computerSelection)
     const userwin = `${userSelection} beats ${computerSelection}`;
     if(user === computer)
     {
-        console.log("It is a tie!");
-        return -1;
+        return "It is a tie!";
     }
     else if(user === "R" && computer === "P")
     {
-        
-        console.log("You Lose! " + compwin);
-        return 0;
+        ++comppoint;
+        return "You Lose! " + compwin;
     }
     else if(user === "P" && computer === "R")
     {
-        console.log("You win! " + userwin);
-        return 1;
+        ++userpoint;
+        return "You win! " + userwin;
+        
+        //return 1;
     }
     else if(user === "R" && computer === "S")
     {
-        console.log("You win! " + userwin);
-        return 1;
+        ++userpoint;
+        return "You win! " + userwin;
+        
+        //return 1;
     }
     else if(user === "S" && computer === "R")
     {
-        console.log("You Lose! " + compwin);
-        return 0;
+        ++comppoint;
+        return "You Lose! " + compwin;
+        
+        //return 0;
     }
     else if(user === "P" && computer === "S")
     {
-        console.log("You Lose! " + compwin);
-        return 0;
+        ++comppoint;
+        return "You Lose! " + compwin;
+        
+        //return 0;
     }
     else if(user === "S" && computer === "P")
     {
-        console.log("You win! " + userwin);
-        return 1;
+        ++userpoint;
+        return "You win! " + userwin;
+        
+       // return 1;
     }
-    else{
-        console.log("You did not enter a valid option!");
-        return -1;
-    }
+
+ 
 }
 
-function game()
-{
-    let userpoint = 0;
-    let comppoint = 0;
-    let x;
-    for(let i = 0; i < 5; i++)
-    {
-        x = oneRound(getPlayerChoice(), getComputerChoice());
-        if(x === 1)
-        {
-            userpoint++;
-            console.log("User: " + userpoint);
-        }
-        else if(x === 0){
-            comppoint++;
-            console.log("computer: " + comppoint);
-        }
-    }
-    if(userpoint > comppoint)
-    {
-        console.log("YOU WIN!!!");
-    }
-    else if(userpoint === comppoint){
-        console.log("IT IS A DRAW");
-    }
-    else{
-        console.log("COMPUTER WINS!");
-    }
-}
+// simple ui stuff to make interactive
 
-game();
+let str = ".";
+const results = document.querySelector(".results");
+const result = document.createElement('h5'); // create a paragraph type element
+const user = document.createElement('h6');
+const comp = document.createElement('h6');
+user.style.margin = 0;
+comp.style.margin = 0;
+result.style.margin = 0;
+results.style.display = "flex";
+results.style.flexDirection = 'column';
+results.appendChild(user);
+results.appendChild(comp);
+results.appendChild(result);
+
+
+  
+
+    
+
+
+const buttons = document.querySelectorAll('.buttons button'); // selects all the buttons
+buttons.forEach(button => button.addEventListener('click', function(e){
+
+    const playerChoice = e.target.textContent;
+    const computerChoice = getComputerChoice();
+    user.textContent = "Player: " + userpoint;
+    comp.textContent = "Computer: " + comppoint;
+    if(userpoint === 5)
+    {
+        result.textContent = "USER WINS!";
+        return;
+    }
+    if(comppoint === 5)
+    {
+        result.textContent = "COMPUTER WINS!";
+        return;
+    }
+    result.textContent = str;
+    str = oneRound(playerChoice, computerChoice);
+    
+})); 
+
